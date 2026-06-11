@@ -23,9 +23,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
   :root{
-    --bg:#3D4F56; --surface:#46606B; --surface2:#415A63;
-    --ink:#F4F1EB; --muted:#AEC0C6; --line:rgba(244,241,235,.15);
-    --accent:#C6A777; --accent-line:#B08D63; --accent-soft:rgba(198,167,119,.16);
+    --bg:#0E1A24; --surface:#172631; --surface2:#13212B;
+    --ink:#F2EDE1; --muted:#A89E84; --line:rgba(203,167,90,.34);
+    --accent:#CBA75A; --accent-line:#9C7C30; --accent-soft:rgba(203,167,90,.12);
     --serif:'Noto Serif JP',serif; --sans:'Noto Sans JP',sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -99,25 +99,28 @@
     .q-text{font-size:19px}
   }
 
-  /* ───── premium polish ───── */
-  body{background:radial-gradient(135% 105% at 50% -8%, #4B5F67 0%, #3D4F56 46%, #33444A 100%) fixed;}
-  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.045;
+  /* ───── luxe polish (navy × gold) ───── */
+  body{background:radial-gradient(140% 115% at 50% -10%, #172937 0%, #0E1A24 52%, #07111A 100%) fixed;}
+  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.05;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
   .wrap{position:relative;z-index:1}
-  .en{font-family:var(--sans);font-weight:500;font-size:10.5px;letter-spacing:.46em;
-    text-transform:uppercase;color:var(--accent);text-align:center;margin-bottom:14px;opacity:.85}
-  h1.title{font-size:37px;letter-spacing:.07em}
-  @media(max-width:560px){h1.title{font-size:28px}}
+  .en{font-family:var(--sans);font-weight:500;font-size:11px;letter-spacing:.46em;
+    text-transform:uppercase;color:var(--accent);text-align:center;margin-bottom:16px}
+  h1.title{font-size:40px;letter-spacing:.08em;color:#CBA75A;
+    background:linear-gradient(180deg,#EBD89C 0%,#CBA75A 55%,#A9842E 100%);
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  @media(max-width:560px){h1.title{font-size:29px}}
 
   @keyframes fadeUp{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:none}}
   #intro,#result{animation:fadeUp .6s cubic-bezier(.2,.7,.2,1) both}
 
-  .btn-primary{box-shadow:0 6px 22px rgba(0,0,0,.22);letter-spacing:.05em}
-  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(0,0,0,.32)}
+  .btn-primary{color:#14222C;letter-spacing:.06em;
+    box-shadow:0 6px 24px rgba(0,0,0,.4),0 0 0 1px rgba(203,167,90,.3)}
+  .btn-primary:hover{background:#DCC079;transform:translateY(-2px);box-shadow:0 12px 32px rgba(0,0,0,.5)}
   .btn-primary:active{transform:translateY(0)}
 
-  .opt{position:relative;overflow:hidden;background:rgba(255,255,255,.045);
-    border-color:rgba(244,241,235,.12);padding-left:26px;
+  .opt{position:relative;overflow:hidden;background:rgba(203,167,90,.04);
+    border-color:rgba(203,167,90,.28);padding-left:26px;
     transition:transform .2s cubic-bezier(.2,.7,.2,1),background .2s,border-color .2s,box-shadow .2s;
     animation:fadeUp .5s cubic-bezier(.2,.7,.2,1) both}
   .opt:nth-child(1){animation-delay:.04s}
@@ -127,36 +130,38 @@
     transform:scaleY(0);transform-origin:top;transition:transform .22s ease}
   .opt::after{content:"→";position:absolute;right:20px;top:50%;transform:translate(8px,-50%);
     color:var(--accent);opacity:0;transition:.22s;font-size:15px}
-  .opt:hover{background:rgba(198,167,119,.1);border-color:rgba(198,167,119,.5);
-    transform:translateY(-2px);box-shadow:0 8px 22px rgba(0,0,0,.22)}
+  .opt:hover{background:rgba(203,167,90,.1);border-color:rgba(203,167,90,.6);
+    transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.35)}
   .opt:hover::before{transform:scaleY(1)}
   .opt:hover::after{opacity:1;transform:translate(0,-50%)}
 
-  .bar{height:3px}
-  .bar>i{box-shadow:0 0 10px rgba(198,167,119,.6)}
+  .bar{height:3px;background:rgba(203,167,90,.14)}
+  .bar>i{box-shadow:0 0 10px rgba(203,167,90,.7)}
 
   .res-card{position:relative;overflow:hidden;
-    background:linear-gradient(180deg,#4B636E 0%,#445B65 100%);
-    border-color:rgba(198,167,119,.3);
-    box-shadow:0 22px 60px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.06)}
+    background:linear-gradient(180deg,#1A2A37 0%,#12202A 100%);
+    border-color:rgba(203,167,90,.42);
+    box-shadow:0 24px 64px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.04)}
+  .res-card::before{content:"";position:absolute;inset:11px;border:1px solid rgba(203,167,90,.22);
+    border-radius:14px;pointer-events:none;z-index:0}
   .res-card>*{position:relative;z-index:1}
   .res-watermark{position:absolute;z-index:0;top:50%;left:50%;transform:translate(-50%,-60%);
     font-family:var(--serif);font-weight:600;font-size:240px;line-height:1;
-    color:rgba(255,255,255,.05);white-space:nowrap;pointer-events:none}
+    color:rgba(203,167,90,.06);white-space:nowrap;pointer-events:none}
   .res-name{font-size:41px}
   @media(max-width:560px){.res-name{font-size:30px}.res-watermark{font-size:150px}}
 
   .sec h3{letter-spacing:.04em}
   .sec h3 .dot{width:16px;height:1.5px;border-radius:0}
 
-  .cta-main{box-shadow:0 14px 40px rgba(0,0,0,.22)}
+  .cta-main{background:#142129;border-color:rgba(203,167,90,.42);box-shadow:0 16px 44px rgba(0,0,0,.4)}
 </style>
 </head>
 <body>
 <div class="wrap">
 
   <section id="intro">
-    <p class="en">Sensai Type Diagnosis</p>
+    <p class="en">◆　Sensai Type Diagnosis　◆</p>
     <p class="kicker">無料診断</p>
     <h1 class="title">繊細12タイプ診断</h1>
     <p class="lead">12の質問に答えると、自分が「どんな繊細さんか」がわかります。<br>
@@ -182,7 +187,7 @@
   <section id="result" class="hidden">
     <div class="res-card" id="resCard">
       <div class="res-watermark" id="rWmark"></div>
-      <p class="en">Your Sensai Type</p>
+      <p class="en">◆　Your Sensai Type　◆</p>
       <p class="res-system">あなたの繊細タイプは</p>
       <p class="res-base" id="rBase"></p>
       <p class="res-name serif" id="rName"></p>
@@ -420,7 +425,7 @@ function restart(){
 }
 
 function saveImage(){
-  html2canvas($('resCard'),{backgroundColor:'#3D4F56',scale:2}).then(canvas=>{
+  html2canvas($('resCard'),{backgroundColor:'#0E1A24',scale:2}).then(canvas=>{
     const a=document.createElement('a');
     a.download='繊細12タイプ診断_結果.png';
     a.href=canvas.toDataURL('image/png');

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>繊細12タイプ診断｜あなたはどんな繊細さん？</title>
+<meta name="description" content="12の質問で、自分が「どんな繊細さんか」がわかる無料診断。生きづらさの正体を性質としてロジカルにひもとき、向く環境や消耗しない生き方の地図を渡します。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="繊細12タイプ診断｜あなたはどんな繊細さん？">
+<meta property="og:description" content="12の質問で、自分が「どんな繊細さん」かがわかる無料診断。向く環境・人との距離・消耗しない生き方が見えてきます。">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="繊細12タイプ診断｜あなたはどんな繊細さん？">
+<meta name="twitter:description" content="12の質問で、自分が「どんな繊細さん」かがわかる無料診断。">
+<!-- TODO（公開後）：og:url と og:image を設定すると共有プレビューが綺麗になります。
+     1200x630pxの画像を ogp.png としてこのフォルダに置き、下2行のコメントを外す：
+<meta property="og:url" content="https://公開したVercelのURL/">
+<meta property="og:image" content="https://公開したVercelのURL/ogp.png"> -->
+<meta name="robots" content="index,follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+  :root{
+    --bg:#F7F4EF; --surface:#FFFFFF; --surface2:#FCFAF6;
+    --ink:#33302C; --muted:#7C756B; --line:#E6DFD4;
+    --accent:#5F7A86; --accent-deep:#46606B; --accent-soft:#EAF0F1;
+    --serif:'Noto Serif JP',serif; --sans:'Noto Sans JP',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);
+    line-height:1.85;-webkit-font-smoothing:antialiased;padding:0 20px}
+  .wrap{max-width:680px;margin:0 auto;padding:64px 0 96px}
+  .serif{font-family:var(--serif)}
+  .kicker{font-family:var(--serif);font-size:13px;letter-spacing:.22em;
+    color:var(--accent);text-align:center;margin-bottom:18px}
+  h1.title{font-family:var(--serif);font-weight:600;font-size:30px;
+    text-align:center;line-height:1.5;letter-spacing:.02em}
+  .lead{text-align:center;color:var(--muted);font-size:15px;margin-top:20px}
+  .note-min{max-width:520px;margin:26px auto 0;font-size:12.5px;color:var(--muted);
+    background:var(--surface2);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px;line-height:1.7;text-align:center}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    font-family:var(--sans);font-weight:500;font-size:15px;cursor:pointer;
+    border-radius:999px;padding:15px 40px;border:1px solid transparent;
+    transition:.2s;text-decoration:none}
+  .btn-primary{background:var(--accent);color:#fff}
+  .btn-primary:hover{background:var(--accent-deep)}
+  .btn-ghost{background:transparent;color:var(--accent-deep);border-color:var(--line)}
+  .btn-ghost:hover{background:var(--surface2)}
+  .center{text-align:center}
+  .mt40{margin-top:40px}.mt28{margin-top:28px}.mt20{margin-top:20px}
+  .bar{height:4px;background:var(--line);border-radius:999px;overflow:hidden;margin-bottom:8px}
+  .bar > i{display:block;height:100%;background:var(--accent);width:0;transition:width .35s ease}
+  .pcount{font-size:12.5px;color:var(--muted);letter-spacing:.04em}
+  .q-stage{min-height:60vh}
+  .q-num{font-family:var(--serif);color:var(--accent);font-size:14px;letter-spacing:.1em;margin-bottom:10px}
+  .q-text{font-family:var(--serif);font-weight:500;font-size:21px;line-height:1.6;margin-bottom:30px}
+  .opt{display:block;width:100%;text-align:left;background:var(--surface);
+    border:1px solid var(--line);border-radius:14px;padding:18px 22px;margin-bottom:14px;
+    font-family:var(--sans);font-size:16px;color:var(--ink);cursor:pointer;transition:.18s;line-height:1.6}
+  .opt:hover{border-color:var(--accent);background:var(--accent-soft);transform:translateY(-1px)}
+  .back{margin-top:14px;background:none;border:none;color:var(--muted);font-size:13.5px;
+    cursor:pointer;font-family:var(--sans);padding:6px 0}
+  .back:hover{color:var(--ink)}
+  .res-card{background:var(--surface);border:1px solid var(--line);border-radius:20px;
+    padding:48px 40px;text-align:center}
+  .res-system{font-family:var(--serif);font-size:14px;letter-spacing:.14em;color:var(--accent)}
+  .res-base{font-family:var(--serif);font-size:16px;color:var(--muted);margin-top:22px}
+  .res-name{font-family:var(--serif);font-weight:600;font-size:34px;margin-top:6px;letter-spacing:.02em}
+  .res-tag{display:inline-block;margin-top:18px;font-size:13.5px;color:var(--accent-deep);
+    background:var(--accent-soft);border-radius:999px;padding:7px 20px}
+  .res-axes{font-size:12.5px;color:var(--muted);margin-top:18px;letter-spacing:.04em}
+  .sec{text-align:left;margin-top:34px;padding-top:30px;border-top:1px solid var(--line)}
+  .sec:first-of-type{border-top:none;margin-top:30px;padding-top:0}
+  .sec h3{font-family:var(--serif);font-weight:500;font-size:16px;color:var(--accent-deep);margin-bottom:10px;
+    display:flex;align-items:center;gap:9px}
+  .sec h3 .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block}
+  .sec p{font-size:15px;line-height:1.95}
+  .cta{margin-top:36px}
+  .cta-main{background:var(--accent-soft);border:1px solid #D6E1E2;border-radius:18px;padding:30px 28px;text-align:center}
+  .cta-main .h{font-family:var(--serif);font-weight:600;font-size:19px}
+  .cta-main .p{font-size:14px;color:var(--muted);margin-top:10px;line-height:1.8}
+  .cta-sub{text-align:center;margin-top:22px;font-size:14px;color:var(--muted)}
+  .cta-sub a{color:var(--accent-deep);text-decoration:underline;text-underline-offset:3px}
+  .share-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:30px}
+  .disc{max-width:560px;margin:34px auto 0;font-size:12px;color:var(--muted);
+    line-height:1.7;text-align:center;border-top:1px solid var(--line);padding-top:22px}
+  .sign{text-align:center;margin-top:40px;font-family:var(--serif);color:var(--muted);font-size:13px;letter-spacing:.1em}
+  .hidden{display:none}
+  @media(max-width:560px){
+    .wrap{padding:44px 0 72px}
+    h1.title{font-size:25px}
+    .res-card{padding:36px 22px}
+    .res-name{font-size:28px}
+    .q-text{font-size:19px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <section id="intro">
+    <p class="kicker">繊細タイプ</p>
+    <h1 class="title">繊細12タイプ診断</h1>
+    <p class="lead">12の質問に答えると、自分が「どんな繊細さんか」がわかります。<br>
+      生きづらさの正体を、性質としてロジカルにひもとくための地図です。</p>
+    <div class="center mt40">
+      <button class="btn btn-primary" onclick="start()">診断をはじめる</button>
+    </div>
+    <p class="note-min">この診断は、医学的・科学的な分類ではありません。<br>
+      自分の傾向を知って、生き方を考えるための「ものの見方のひとつ」です。</p>
+  </section>
+
+  <section id="quiz" class="hidden">
+    <div class="bar"><i id="barFill"></i></div>
+    <p class="pcount"><span id="pNow">1</span> / 12</p>
+    <div class="q-stage mt28">
+      <p class="q-num" id="qNum">Q1</p>
+      <p class="q-text serif" id="qText"></p>
+      <div id="opts"></div>
+      <button class="back hidden" id="backBtn" onclick="back()">← ひとつ戻る</button>
+    </div>
+  </section>
+
+  <section id="result" class="hidden">
+    <div class="res-card" id="resCard">
+      <p class="res-system">あなたの繊細タイプは</p>
+      <p class="res-base" id="rBase"></p>
+      <p class="res-name serif" id="rName"></p>
+      <span class="res-tag" id="rOne"></span>
+      <p class="res-axes" id="rAxes"></p>
+
+      <div class="sec"><h3><span class="dot"></span>こんな繊細さん</h3><p id="rAbout"></p></div>
+      <div class="sec"><h3><span class="dot"></span>あなたの才能</h3><p id="rTalent"></p></div>
+      <div class="sec"><h3><span class="dot"></span>疲れるとき</h3><p id="rTired"></p></div>
+      <div class="sec"><h3><span class="dot"></span>回復のしかた</h3><p id="rRecover"></p></div>
+      <div class="sec"><h3><span class="dot"></span>向いている環境</h3><p id="rEnv"></p></div>
+    </div>
+
+    <div class="cta">
+      <div class="cta-main">
+        <p class="h">続きは、レターで。</p>
+        <p class="p">このタイプの「人との距離のとり方」「強みの活かし方」「向く仕事」を、もっと具体的に。<br>
+          登録すると、28ページの取扱説明書（無料特典）と、週1〜2のレターが届きます。</p>
+        <div class="mt20"><a class="btn btn-primary" id="ctaLetter" href="#" target="_blank" rel="noopener">無料で受け取る</a></div>
+      </div>
+      <p class="cta-sub hidden" id="ctaNoteRow">今すぐ深く知りたい自分へ → <a id="ctaNote" href="#" target="_blank" rel="noopener">タイプ別の取扱説明書（note）</a></p>
+    </div>
+
+    <div class="share-row">
+      <button class="btn btn-ghost" onclick="saveImage()">結果を画像で保存</button>
+      <button class="btn btn-ghost" onclick="restart()">もう一度診断する</button>
+    </div>
+
+    <p class="disc">この診断は医学的・科学的な分類ではなく、自分の傾向を知るための「ものの見方のひとつ」です。
+      占いや運命を示すものではありません。</p>
+    <p class="sign">繊細12タイプ診断 ｜ YUTA</p>
+  </section>
+
+</div>
+
+<script>
+// ▼▼ 公開前にここだけ差し替える ▼▼
+// SUBSTACK_URL：繊細さんのトリセツレターの登録ページURL（例 https://xxxx.substack.com/ ）。Substack作成後に貼る。
+const SUBSTACK_URL = "https://yutahsp.substack.com/";
+// NOTE_URL：タイプ別の有料/無料取説note。まだ無いので "#" のまま＝そのリンクは自動で非表示になる。出来たら貼る。
+const NOTE_URL     = "#";
+// ▲▲ 差し替えはこの2行だけ ▲▲
+
+const QUESTIONS = [
+  {axis:'1', t:'予定のない休日。どちらが回復しますか？',
+    o:[['家でひとり静かに過ごす','I'],['誰かと会って過ごす','E']]},
+  {axis:'1', t:'人と長く一緒にいると、どうなりますか？',
+    o:[['だんだん消耗してくる','I'],['だんだん元気が出てくる','E']]},
+  {axis:'1', t:'考えごとを整理したいとき、どうしますか？',
+    o:[['ひとりで頭の中を整理したい','I'],['誰かに話しながら整理したい','E']]},
+  {axis:'1', t:'初対面が多い集まりでは？',
+    o:[['まず聞き役にまわる','I'],['自分から話しかける','E']]},
+  {axis:'2', t:'新しい環境に入るとき、近いのは？',
+    o:[['慣れるまで気が張る','A'],['わくわくする','S']]},
+  {axis:'2', t:'毎日の理想はどちら？',
+    o:[['穏やかで予測できる日々','A'],['刺激や変化のある日々','S']]},
+  {axis:'2', t:'予定が急に変わると？',
+    o:[['落ち着かなくなる','A'],['むしろ面白いと感じる','S']]},
+  {axis:'2', t:'休みの日に行きたいのは？',
+    o:[['安心できるいつもの場所','A'],['行ったことのない場所','S']]},
+  {axis:'3', t:'何かあったとき、最初に動くのは？',
+    o:[['頭で考えて整理する','T'],['気持ちや空気を感じ取る','F'],['とりあえず体が動く','M']]},
+  {axis:'3', t:'物事を決めるとき、重視するのは？',
+    o:[['筋が通っているか','T'],['しっくりくるか','F'],['勢い・タイミング','M']]},
+  {axis:'3', t:'人と話していて疲れるのは、どんなとき？',
+    o:[['考えがまとまらないまま進むとき','T'],['相手の感情を受け取りすぎたとき','F'],['動きを止められたとき','M']]},
+  {axis:'3', t:'自分の口ぐせに近いのは？',
+    o:[['「なぜ？」「つまり？」','T'],['「大丈夫？」「わかる」','F'],['「とりあえずやってみよう」','M']]},
+];
+
+const BASES = {
+  '深考':{label:'深考（しんこう）タイプ', sum:'静かに深く考える繊細さん'},
+  '共鳴':{label:'共鳴（きょうめい）タイプ', sum:'人に寄り添い消耗しやすい繊細さん'},
+  '疾風':{label:'疾風（しっぷう）タイプ', sum:'刺激も人も好き、でも繊細な繊細さん'},
+  '探究':{label:'探究（たんきゅう）タイプ', sum:'好奇心は強いが人疲れしやすい繊細さん'},
+};
+
+const TYPES = {
+  '深考T':{name:'じっくり繊細さん',base:'深考',axes:'避ける × 内向 × 思索',
+    about:'ひとつのことが気になると、納得いくまで考え込んでしまう。会議で急に「どう思う？」と振られると、頭の中はちゃんと動いているのに、うまく言葉にできない。「自分は決断が遅い」と思っていませんか。わかります。でもそれ、欠点じゃないんです。',
+    talent:'じっくり繊細さんは、物事の本質を掘り当てる力を持っています。表面でわかった気にならず、「本当にそうかな」と深く考えられる。だから一度任せると、ほかの人が見落とした要点まで拾ってくる。浅い判断では届かない場所まで、たどり着ける人です。',
+    tired:'即答を迫られる場や、情報が多すぎる環境で消耗します。「早く決めて」と急かされたり、用件が次々と割り込んだりすると、頭がフリーズしてしまう。これは能力が低いのではなく、深く処理するぶん、時間がいるだけなんです。',
+    recover:'ひとりで静かに考えを整理する時間が、いちばんの充電になります。頭の中をぜんぶ紙に書き出して、いったん空にするのもおすすめです。焦らなくて大丈夫。考える時間を確保することは、わがままじゃありません。',
+    env:'じっくり考えることが「価値」になる場所が合います。研究、分析、執筆、専門職など、速さより深さが評価される環境です。逆に、即断と数をさばくスピード勝負の現場では、よさが出にくくなります。'},
+  '深考F':{name:'かかえこみ繊細さん',base:'深考',axes:'避ける × 内向 × 共感',
+    about:'深く考えるうえに、人の気持ちまで自分のことのように受け取ってしまう。職場で誰かが不機嫌だと、それが一日中、頭から離れない。気づけば、人の感情をずっとひきずっていませんか。それは心が冷たいどころか、あたたかすぎるからです。',
+    talent:'かかえこみ繊細さんは、言葉にならない機微を読み取る力を持っています。相手が本当は何に困っているのか、表情やトーンから察せる。だから「この人はちゃんと分かってくれる」と、深く信頼される。人を理解する仕事で武器になるセンサーです。',
+    tired:'感情がぶつかる場や、誰かの不機嫌が漂う空間で消耗します。人の悩みを相談されると、自分のことのように抱えてしまい、気づいたらヘトヘト。抱え込みやすいぶん、自分の回復が後回しになりがちです。',
+    recover:'一度、人の感情から物理的に離れる時間をつくってください。「今のこの気持ち、どこまでが自分のもの？」と紙に書き分けると、人のものと切り分けられます。背負わなくていい荷物は、置いていいんです。',
+    env:'深さと共感の両方が活きる場所が合います。対人支援、編集、臨床など、ていねいに1人と向き合う職種です。逆に、クレーム最前線や大人数の感情が渦巻く場では、消耗が激しくなります。'},
+  '深考M':{name:'ひらめき繊細さん',base:'深考',axes:'避ける × 内向 × 直感',
+    about:'ふだんは静かなのに、ふとした瞬間に答えが降ってくる。でも「根拠は？」と聞かれると急にしぼんで、「思いつきだから」と飲み込んでいませんか。そのひらめきは、考え抜いた末に出てきた結論なんです。',
+    talent:'ひらめき繊細さんは、点と点を一瞬でつなぐ力を持っています。じっくり溜め込んだ思考が、ある瞬間に形になる。みんなが行き詰まった時、まったく別の角度から突破口を出せる人です。論理だけでは届かないアイデアを生み出します。',
+    tired:'常に説明や根拠を求められる場で消耗します。ひらめきはプロセスを飛ばすので、「なんで？」と詰められると言葉に詰まる。手順を逐一報告させられる管理の細かい環境も、息苦しく感じます。',
+    recover:'何もしない、ぼんやりする時間を意識的に取ってください。スマホを置いて、散歩やお風呂でぼーっとするとひらめきが戻ってきます。スケジュールを詰めすぎないことが、自分の才能を守ることになります。',
+    env:'発想を形にできる場所が合います。企画、制作、開発など、自由度が高くアイデアが評価される環境です。逆に、決められた手順を正確に繰り返すだけの仕事は、退屈で力が出にくくなります。'},
+  '共鳴T':{name:'気くばり繊細さん',base:'共鳴',axes:'避ける × 外向 × 思索',
+    about:'人が好きなのに、その場の最適解をいつも頭で探してしまう。飲み会の席でも、無意識に全員の表情をチェックして、「どう振る舞えば角が立たないか」と先回りして、気づけば疲れていませんか。それは、人と頭の両方を使っている証拠です。',
+    talent:'気くばり繊細さんは、場の力学を読んで整える力を持っています。誰と誰がぶつかりそうか、何を言えば収まるかが見える。「あの人がいると、なぜか場が回る」と言われるタイプ。人と仕組みの間をつなぐ仕事で重宝されます。',
+    tired:'雑な進め方や、配慮のない言動が飛び交う場で消耗します。頼られると断れず、気づけば全員ぶんのフォローを抱えている。全部を整えようとすると、自分が削れていきます。',
+    recover:'「これは自分が背負う問題じゃない」と線を引く練習をしてください。「今日はこれは整えなくていい」と決める1件を作るだけで、ぐっと楽になります。気くばりは才能ですが、24時間オンにする必要はありません。',
+    env:'人と段取りの両方が活きる場所が合います。人事、ディレクション、調整役など、橋渡しが評価される環境です。逆に、配慮ゼロのトップダウンや、調整役を便利使いされる場は消耗します。'},
+  '共鳴F':{name:'よりそい繊細さん',base:'共鳴',axes:'避ける × 外向 × 共感',
+    about:'人の気持ちにまっすぐ寄り添えるぶん、相手の感情が自分に流れ込んでくる。誰かの落ち込みが、自分のことのように胸に刺さる。気づけば、自分より誰かのことで頭がいっぱいになっていませんか。それは、共感の力が人一倍強いからです。',
+    talent:'よりそい繊細さんは、相手に「わかってもらえた」と感じさせる力を持っています。理屈ではなく心でつながれるから、弱った人が「この人になら話せる」と頼ってくる。人が一番つらいときに、必要とされる力です。',
+    tired:'感情の起伏が大きい場や、ネガティブな空気の中で消耗します。共感のスイッチが切れないので、相手が泣いていると自分まで涙が出てしまうことも。12タイプの中で、いちばん消耗しやすいタイプです。',
+    recover:'「全部は受け止めなくていい」と、自分に許可してください。心を守る「壁」を持っていいんです。ひとりで安心できる場所に戻って、流れ込んだ感情を一度リセットする時間を、最優先にしてください。',
+    env:'あたたかい共感が価値になる場所が合います。カウンセリング、ケア、対人支援など、人の心に寄り添う職種です。逆に、成果が数字だけで測られる現場では、よさが評価されにくくなります。'},
+  '共鳴M':{name:'せわやき繊細さん',base:'共鳴',axes:'避ける × 外向 × 直感',
+    about:'困っている人を見ると、考えるより先に体が動いてしまう。会議で誰かが言葉に詰まると、気づけば自分がフォローしている。頼まれてもいないことまで引き受けていませんか。それは、優しさが反射になるくらい根づいているからです。',
+    talent:'せわやき繊細さんは、場の空気を察してすぐ動ける力を持っています。誰かが困る一歩手前で、そっと手を差し出せる。このフットワークは、チームの潤滑油として欠かせない存在になります。',
+    tired:'自分のことが後回しになり続けると消耗します。「ついでにこれも」が積み重なって、便利に使われやすい。気づいたときには、自分のエネルギーが空っぽになっていることがあります。',
+    recover:'動く前に「これは自分がやるべき？」と一拍おいてください。その一拍が、自分を守ります。手を引く勇気も力です。たまには、誰かに世話を焼かれる側に回っていいんです。',
+    env:'気配りと行動力が活きる場所が合います。チームサポート、現場の調整など、人を支える役回りが評価される環境です。逆に、気遣いを当たり前に消費される職場では、すり減ってしまいます。'},
+  '疾風T':{name:'ブレーキ繊細さん',base:'疾風',axes:'求める × 外向 × 思索',
+    about:'本当は動きたいし刺激も好きなのに、アクセルを踏んだ瞬間、頭が「待った」をかける。やりたい気持ちと考えすぎが綱引きして、動き出せずにいませんか。それは、アクセルとブレーキを両方持っているからです。',
+    talent:'ブレーキ繊細さんは、勢いとリスク管理を両立できる力を持っています。挑戦したい気持ちがありながら、危うさにも気づける。勢いだけで突っ走らないから、大きな失敗をしにくい。暴走しない推進力として、信頼されます。',
+    tired:'即断即決を求められる場や、考える間もなく走らされる環境で消耗します。動きたいのに考え込む自分に、自分でいちばんイライラしてしまう。その葛藤そのものが、エネルギーを奪います。',
+    recover:'「考えてから動く」自分を責めないでください。それは欠点ではなく、質の高い判断のための時間です。「完璧じゃなくていいから、小さく試す」を1つ許すと、ブレーキとアクセルの折り合いがついてきます。',
+    env:'戦略と実行のあいだが活きる場所が合います。企画、マーケティング、事業設計など、考えてから仕掛ける仕事です。逆に、ノープランで特攻する現場も、変化のない守りだけの職場も、力が出にくいです。'},
+  '疾風F':{name:'もりあげ繊細さん',base:'疾風',axes:'求める × 外向 × 共感',
+    about:'熱量で人を巻き込めるのに、そのぶん感情の波も大きい。楽しい場の主役だったのに、家に帰るとどっと疲れて、ひとりで静かに落ち込んでいませんか。その熱とゆらぎは、セットで自分の魅力なんです。',
+    talent:'もりあげ繊細さんは、人の心に火をつける力を持っています。その場にいるだけで空気がぱっと明るくなり、周りを前向きにできる。人を動かしたいとき、何よりの推進力になる熱量です。',
+    tired:'感情を出し続ける場や、テンションを保ち続ける環境で消耗します。「いつも元気でいてね」と期待されるほど、波の谷が深くなる。オンの時間が長いと、反動も大きくなります。',
+    recover:'盛り上げた後は、意識的にひとりの静かな時間を取ってください。「ひとりの30分」を先に予定に入れておくと、立て直しが効きます。波があるのは普通。谷の自分も込みで自分だと受け入れると、ぐっとラクになります。',
+    env:'熱量と表現が活きる場所が合います。発信、クリエイティブ、人前に立つ仕事など、感情を伝える力が評価される環境です。逆に、常にハイテンションを保たされる仕事は、燃え尽きやすくなります。'},
+  '疾風M':{name:'つっぱしり繊細さん',base:'疾風',axes:'求める × 外向 × 直感',
+    about:'勢いよく飛び込めるのに、あとから繊細さが顔を出す。勢いで動いた夜、ベッドの中で「あれでよかったかな」と一気に不安が押し寄せていませんか。突進力と繊細さは、矛盾じゃなく両立しているんです。',
+    talent:'つっぱしり繊細さんは、誰よりも先に一歩を踏み出せる力を持っています。みんなが迷っている間に、もう動き始めている。この突破力は、停滞した状況を動かす起爆剤になります。',
+    tired:'動いた後の振り返りで消耗します。突っ走れるぶん、後から来る不安や反省の波で疲れる。スピードと繊細さのギャップに、自分で戸惑うことがあります。',
+    recover:'動いた自分を、まず「よくやった」と認めてください。寝る前に声に出すだけでも、後悔の波がやわらぎます。後悔は繊細さの裏返し。走った後のケア時間をセットにすると、突破力を長く使えます。',
+    env:'行動力が価値になる場所が合います。起業、企画営業、新規開拓など、まず動ける人が評価される環境です。逆に、石橋を叩く稟議型の組織では、持ち味が死んでしまいます。'},
+  '探究T':{name:'ほりさげ繊細さん',base:'探究',axes:'求める × 内向 × 思索',
+    about:'興味を持つと、ひとりでとことん掘り下げてしまう。好きなことには何時間でも潜れるのに、中身のない雑談は5分でぐったり。「付き合いが悪いのかな」と気にしていませんか。その没入力は、人と比べられない強みです。',
+    talent:'ほりさげ繊細さんは、ひとつのテーマを深く極める力を持っています。みんなが飽きて離れた後も、ひとりで掘り続けられる。誰も見ない深さまで潜れるから、専門性として時間をかけるほど価値が積み上がります。',
+    tired:'雑談中心の場や、浅く広い付き合いを求められる環境で消耗します。興味のない雑務に時間を取られるのが、何より苦痛。人疲れと退屈が重なると、一気に消耗します。',
+    recover:'好きなことに没頭する時間そのものが、最高の回復になります。人付き合いを減らすことに、罪悪感を持たなくていい。深く潜れる環境を確保することが、自分を保つ条件です。',
+    env:'専門性が活きる場所が合います。研究開発、分析、専門職など、深さがそのまま評価される環境です。逆に、常に雑談やコミュニケーションを求められる職場では、消耗します。'},
+  '探究F':{name:'マイワールド繊細さん',base:'探究',axes:'求める × 内向 × 共感',
+    about:'独自の感性で世界をとらえるのに、人と関わると気疲れしてしまう。みんなが流す景色に、自分だけ立ち止まって意味を見つける。内側は豊かなのに外に出ると消耗する——そのギャップに戸惑っていませんか。その内なる世界こそ、才能の源です。',
+    talent:'マイワールド繊細さんは、人とは違う角度でものを感じ取る力を持っています。ありふれたものを、誰も思いつかない切り口で表現できる。この感性は、表現やアートとして唯一無二の価値になります。',
+    tired:'同調を求められる場や、人に合わせ続ける環境で消耗します。「みんなに合わせて」と言われ自分の世界を否定されると、深く傷つく。集団のペースに飲まれると、感性が鈍ってしまいます。',
+    recover:'自分の世界に没頭できる、ひとりの時間を死守してください。誰にも見せない前提で好きに表現することが、心の充電になります。人と違うことは、守るべき個性です。',
+    env:'独自の感性が活きる場所が合います。作家、アート、クリエイティブなど、オリジナリティが評価される環境です。逆に、均質さを求める組織では、角を削られて苦しくなります。'},
+  '探究M':{name:'チャレンジ繊細さん',base:'探究',axes:'求める × 内向 × 直感',
+    about:'好奇心のままに飛び込めるのに、人との調整が入ると急に止まってしまう。「やってみたい」はすぐ動けるのに、根回しの一言で足が止まる。対人で足踏みする自分に、もどかしさを感じていませんか。その探究心と繊細さは、両方が本物です。',
+    talent:'チャレンジ繊細さんは、未知のことに自分から飛び込める力を持っています。前例がなくても、自分で調べて道を作ってしまう。この実験精神は、誰も歩いていない道を進むときに活きます。',
+    tired:'複雑な人間関係の調整や、根回しが必要な場で消耗します。動きたいのに対人の壁で止められ、自由を奪われた瞬間、一気にやる気が落ちます。',
+    recover:'対人で止まった自分を責めず、「ひとりで動ける環境」を選び直してください。調整が苦手なのは欠点ではなく、自由に動くための条件です。身軽でいられる場所を、自分に用意してあげてください。',
+    env:'自由と挑戦が活きる場所が合います。フリーランス、独立した職人仕事など、自分のペースで開拓できる環境です。逆に、稟議と合意形成が必須の大組織では、身動きが取れなくなります。'},
+};
+
+let idx=0;
+const ans=new Array(12).fill(null);
+const $=id=>document.getElementById(id);
+// ページ読み込み時にCTAのリンクをセット（結果を出す前から有効にする）
+$('ctaLetter').href=SUBSTACK_URL;
+$('ctaNote').href=NOTE_URL;
+$('ctaNoteRow').classList.toggle('hidden', NOTE_URL==='#');
+
+function start(){ $('intro').classList.add('hidden'); $('quiz').classList.remove('hidden'); idx=0; render(); }
+
+function render(){
+  const q=QUESTIONS[idx];
+  $('pNow').textContent=idx+1;
+  $('barFill').style.width=((idx)/12*100)+'%';
+  $('qNum').textContent='Q'+(idx+1);
+  $('qText').textContent=q.t;
+  const box=$('opts'); box.innerHTML='';
+  q.o.forEach(([label,code])=>{
+    const b=document.createElement('button');
+    b.className='opt'; b.textContent=label;
+    b.onclick=()=>choose(code);
+    box.appendChild(b);
+  });
+  $('backBtn').classList.toggle('hidden', idx===0);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function choose(code){
+  ans[idx]=code;
+  if(idx<11){ idx++; render(); }
+  else { $('barFill').style.width='100%'; finish(); }
+}
+function back(){ if(idx>0){ idx--; render(); } }
+
+function finish(){
+  let I=0,E=0;
+  for(let i=0;i<4;i++){ ans[i]==='I'?I++:E++; }
+  const introvert = (I===E) ? (ans[0]==='I') : (I>E);
+  let A=0,S=0;
+  for(let i=4;i<8;i++){ ans[i]==='A'?A++:S++; }
+  const avoid = (A===S) ? (ans[4]==='A') : (A>S);
+  let base;
+  if(avoid && introvert) base='深考';
+  else if(avoid && !introvert) base='共鳴';
+  else if(!avoid && !introvert) base='疾風';
+  else base='探究';
+  let T=0,F=0,M=0;
+  for(let i=8;i<12;i++){ const c=ans[i]; if(c==='T')T++; else if(c==='F')F++; else M++; }
+  const mx=Math.max(T,F,M);
+  const top=[['T',T],['F',F],['M',M]].filter(x=>x[1]===mx).map(x=>x[0]);
+  let sub;
+  if(top.length===1) sub=top[0];
+  else sub = top.includes(ans[8]) ? ans[8] : top[0];
+  showResult(base+sub);
+}
+
+function showResult(key){
+  const d=TYPES[key]; const b=BASES[d.base];
+  $('rBase').textContent=b.label+' の';
+  $('rName').textContent=d.name;
+  $('rOne').textContent=b.sum;
+  $('rAxes').textContent=d.axes;
+  $('rAbout').textContent=d.about;
+  $('rTalent').textContent=d.talent;
+  $('rTired').textContent=d.tired;
+  $('rRecover').textContent=d.recover;
+  $('rEnv').textContent=d.env;
+  $('ctaLetter').href=SUBSTACK_URL;
+  $('ctaNote').href=NOTE_URL;
+  // 取説noteのURLが未設定（"#"）のうちは、そのリンク行を出さない
+  $('ctaNoteRow').classList.toggle('hidden', NOTE_URL==='#');
+  $('quiz').classList.add('hidden');
+  $('result').classList.remove('hidden');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function restart(){
+  ans.fill(null); idx=0;
+  $('result').classList.add('hidden');
+  $('intro').classList.remove('hidden');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function saveImage(){
+  html2canvas($('resCard'),{backgroundColor:'#ffffff',scale:2}).then(canvas=>{
+    const a=document.createElement('a');
+    a.download='繊細12タイプ診断_結果.png';
+    a.href=canvas.toDataURL('image/png');
+    a.click();
+  });
+}
+</script>
+</body>
+</html>

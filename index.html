@@ -154,7 +154,29 @@
   .sec h3{letter-spacing:.04em}
   .sec h3 .dot{width:16px;height:1.5px;border-radius:0}
 
-  .cta-main{background:#142129;border-color:rgba(203,167,90,.42);box-shadow:0 16px 44px rgba(0,0,0,.4)}
+  .cta-main{background:#142129;border-color:rgba(203,167,90,.42);box-shadow:0 16px 44px rgba(0,0,0,.4);
+    text-align:center;padding:34px 30px}
+  .cta-bridge{text-align:center;font-family:var(--serif);font-size:15px;color:var(--accent);
+    letter-spacing:.12em;margin:6px 0 18px;position:relative}
+  .cta-bridge::after{content:"";display:block;width:38px;height:1px;background:var(--accent-line);
+    opacity:.7;margin:14px auto 0}
+  .cta-eyebrow{display:inline-block;font-family:var(--serif);font-size:12px;letter-spacing:.12em;
+    color:var(--accent);border:1px solid var(--accent-line);border-radius:999px;
+    padding:6px 18px;background:var(--accent-soft);margin-bottom:18px}
+  .cta-main .h{font-size:20px;line-height:1.55}
+  .cta-main .p{font-size:14px;color:var(--muted);margin-top:14px;line-height:1.85}
+  .cta-main .p b{color:var(--ink);font-weight:600}
+  .cta-teaser{font-family:var(--serif);font-size:15.5px;color:var(--ink);line-height:1.75;
+    margin:20px auto 0;max-width:30em;text-align:left;
+    padding:14px 18px;border-left:2px solid var(--accent);
+    background:rgba(203,167,90,.06);border-radius:0 10px 10px 0}
+  .cta-listhead{font-family:var(--serif);font-size:13px;color:var(--accent);
+    letter-spacing:.08em;text-align:center;margin-top:24px}
+  .cta-list{list-style:none;text-align:left;max-width:30em;margin:12px auto 0;display:grid;gap:11px}
+  .cta-list li{position:relative;padding-left:27px;font-size:14px;color:var(--ink);line-height:1.7}
+  .cta-list li::before{content:"✓";position:absolute;left:0;top:0;color:var(--accent);font-weight:700}
+  .cta-go{margin-top:6px;width:100%;max-width:380px}
+  .cta-meta{font-size:12px;color:var(--muted);margin-top:13px;letter-spacing:.04em}
 </style>
 </head>
 <body>
@@ -202,13 +224,23 @@
     </div>
 
     <div class="cta">
+      <p class="cta-bridge serif">ここからが、本編です。</p>
       <div class="cta-main">
-        <p class="h">続きは、レターで。</p>
-        <p class="p">このタイプの「人との距離のとり方」「強みの活かし方」「向く仕事」を、もっと具体的に。<br>
-          登録すると、28ページの取扱説明書（無料特典）と、週1〜2のレターが届きます。</p>
-        <div class="mt20"><a class="btn btn-primary" id="ctaLetter" href="#" target="_blank" rel="noopener">無料で受け取る</a></div>
+        <p class="cta-eyebrow" id="ctaEyebrow"></p>
+        <p class="h serif">「どんな繊細さんか」の先にある、<br>「どう生きるか」の地図。</p>
+        <p class="p">この診断でわかったのは、自分が"どんな繊細さんか"まで。<br>
+          でも本当に知りたいのは、それを<b>どう活かして、どう働くか</b>のはずです。</p>
+        <p class="cta-teaser" id="ctaTeaser"></p>
+        <p class="cta-listhead">完全ガイドで渡すもの</p>
+        <ul class="cta-list">
+          <li><span id="ctaListName"></span>が、本当に向いている仕事・環境（具体例つき）</li>
+          <li>人との距離の取り方と、消耗しない断り方</li>
+          <li>疲れの止め方と、自分に合った回復の設計</li>
+          <li>強みを「現実を変える力」に変えていく順番</li>
+        </ul>
+        <div class="mt20"><a class="btn btn-primary cta-go" id="ctaNote" href="#" target="_blank" rel="noopener"></a></div>
+        <p class="cta-meta">note ／ 買い切り・追記でずっと更新中</p>
       </div>
-      <p class="cta-sub hidden" id="ctaNoteRow">今すぐ深く知りたい自分へ → <a id="ctaNote" href="#" target="_blank" rel="noopener">タイプ別の取扱説明書（note）</a></p>
     </div>
 
     <div class="share-row">
@@ -224,12 +256,25 @@
 </div>
 
 <script>
-// ▼▼ 公開前にここだけ差し替える ▼▼
-// SUBSTACK_URL：繊細さんのトリセツレターの登録ページURL（例 https://xxxx.substack.com/ ）。Substack作成後に貼る。
-const SUBSTACK_URL = "https://yutahsp.substack.com/";
-// NOTE_URL：タイプ別の有料/無料取説note。まだ無いので "#" のまま＝そのリンクは自動で非表示になる。出来たら貼る。
-const NOTE_URL     = "#";
-// ▲▲ 差し替えはこの2行だけ ▲▲
+// ▼▼ タイプ別・有料note（980円）＝結果ページの主役CTA。差し替えはこの中だけ ▼▼
+// key（深考T 等）→ そのタイプの個別note。noteを作り替えたら url を貼り替える。
+// hook＝そのタイプ専用の「続きが読みたくなる」一文（理論書の性質から導出）。
+// ※「適職設計図（完全ガイド）」と無料レター（Substack）は、購入後＝note本文の中で訴求するため、結果ページには載せない。
+const NOTES = {
+  '深考T':{url:'https://note.com/yutapapa_hsp/n/n0f18e4089395', hook:'「決断が遅い」と責めてきたその性質を、武器に変える働き方の地図。'},
+  '深考F':{url:'https://note.com/yutapapa_hsp/n/n62389fb765a1', hook:'背負いすぎた感情を、ちゃんと「置いていける」場所のつくり方。'},
+  '深考M':{url:'https://note.com/yutapapa_hsp/n/n564c1e445fa7', hook:'説明できないひらめきを、成果として認めさせる環境の選び方。'},
+  '共鳴T':{url:'https://note.com/yutapapa_hsp/n/nc3be269bf4c0', hook:'全部を整えなくても回る、気くばりの「線の引き方」。'},
+  '共鳴F':{url:'https://note.com/yutapapa_hsp/n/n9144bf18f63a', hook:'流れ込んでくる感情から、自分を守る「壁」のつくり方。'},
+  '共鳴M':{url:'https://note.com/yutapapa_hsp/n/n48b4eb9e1a71', hook:'便利に使われず、優しさをちゃんと活かす立ち位置の見つけ方。'},
+  '疾風T':{url:'https://note.com/yutapapa_hsp/n/n23270f83d774', hook:'考えすぎる自分のまま、ちゃんと動き出すための順番。'},
+  '疾風F':{url:'https://note.com/yutapapa_hsp/n/n8ef83c066d82', hook:'熱量と感情の波を、燃え尽きずに活かしきる働き方。'},
+  '疾風M':{url:'https://note.com/yutapapa_hsp/n/nb21bf2dc4a4a', hook:'走った後の不安とセットで、突破力を長く使い続ける方法。'},
+  '探究T':{url:'https://note.com/yutapapa_hsp/n/n5cfcf2b4e310', hook:'没頭できる深さを、そのまま「価値」に変えられる場所。'},
+  '探究F':{url:'https://note.com/yutapapa_hsp/n/nef5be55c8c1e', hook:'人に削られず、自分だけの世界を仕事にしていく道。'},
+  '探究M':{url:'https://note.com/yutapapa_hsp/n/n00104985f7d9', hook:'対人の壁で止まらず、自由に動き続けられる環境の選び方。'},
+};
+// ▲▲ 差し替えはこの中だけ ▲▲
 
 const QUESTIONS = [
   {axis:'1', t:'予定のない休日。どちらが回復しますか？',
@@ -343,10 +388,7 @@ const TYPES = {
 let idx=0;
 const ans=new Array(12).fill(null);
 const $=id=>document.getElementById(id);
-// ページ読み込み時にCTAのリンクをセット（結果を出す前から有効にする）
-$('ctaLetter').href=SUBSTACK_URL;
-$('ctaNote').href=NOTE_URL;
-$('ctaNoteRow').classList.toggle('hidden', NOTE_URL==='#');
+// noteのCTAは結果が出たタイミングで showResult() がタイプ別にセットする
 
 function start(){ $('intro').classList.add('hidden'); $('quiz').classList.remove('hidden'); idx=0; render(); }
 
@@ -408,10 +450,13 @@ function showResult(key){
   $('rTired').textContent=d.tired;
   $('rRecover').textContent=d.recover;
   $('rEnv').textContent=d.env;
-  $('ctaLetter').href=SUBSTACK_URL;
-  $('ctaNote').href=NOTE_URL;
-  // 取説noteのURLが未設定（"#"）のうちは、そのリンク行を出さない
-  $('ctaNoteRow').classList.toggle('hidden', NOTE_URL==='#');
+  // タイプ別の有料note（980円）へのCTAを、この結果に合わせてセット
+  const note=NOTES[key];
+  $('ctaEyebrow').textContent=d.name+' 専用・完全ガイド';
+  $('ctaTeaser').textContent=note.hook;
+  $('ctaListName').textContent=d.name;
+  $('ctaNote').textContent=d.name+'の完全ガイドを読む';
+  $('ctaNote').href=note.url;
   $('quiz').classList.add('hidden');
   $('result').classList.remove('hidden');
   window.scrollTo({top:0,behavior:'smooth'});
